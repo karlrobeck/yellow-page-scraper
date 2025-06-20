@@ -34,5 +34,6 @@ type Category struct {
 	ID          int64
 	Name        string
 	Url         string
+	Size        int64
 	IsCompleted int64
 }

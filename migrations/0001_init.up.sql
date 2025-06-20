@@ -3,6 +3,7 @@ create table categories (
   id integer not null primary key autoincrement,
   name text not null unique, -- name of the category
   url text not null unique, -- url of the category
+  size integer not null default 0, -- how many businesses in the category
   is_completed integer not null default 0 -- is completed
 );
 

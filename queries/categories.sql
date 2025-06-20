@@ -1,5 +1,5 @@
 -- name: CreateCategory :one
-insert into categories (name,url) values (?,?) returning *;
+insert into categories (name,url,size) values (?,?,?) returning *;
 
 -- name: GetAllCategories :many
 select * from categories;

@@ -10,28 +10,30 @@ import (
 )
 
 const createCategory = `-- name: CreateCategory :one
-insert into categories (name,url) values (?,?) returning id, name, url, is_completed
+insert into categories (name,url,size) values (?,?,?) returning id, name, url, size, is_completed
 `
 
 type CreateCategoryParams struct {
 	Name string
 	Url  string
+	Size int64
 }
 
 func (q *Queries) CreateCategory(ctx context.Context, arg CreateCategoryParams) (Category, error) {
-	row := q.db.QueryRowContext(ctx, createCategory, arg.Name, arg.Url)
+	row := q.db.QueryRowContext(ctx, createCategory, arg.Name, arg.Url, arg.Size)
 	var i Category
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Url,
+		&i.Size,
 		&i.IsCompleted,
 	)
 	return i, err
 }
 
 const getAllCategories = `-- name: GetAllCategories :many
-select id, name, url, is_completed from categories
+select id, name, url, size, is_completed from categories
 `
 
 func (q *Queries) GetAllCategories(ctx context.Context) ([]Category, error) {
@@ -47,6 +49,7 @@ func (q *Queries) GetAllCategories(ctx context.Context) ([]Category, error) {
 			&i.ID,
 			&i.Name,
 			&i.Url,
+			&i.Size,
 			&i.IsCompleted,
 		); err != nil {
 			return nil, err
@@ -63,7 +66,7 @@ func (q *Queries) GetAllCategories(ctx context.Context) ([]Category, error) {
 }
 
 const markCategoryAsComplete = `-- name: MarkCategoryAsComplete :one
-update categories set is_completed = 1 where id = ? returning id, name, url, is_completed
+update categories set is_completed = 1 where id = ? returning id, name, url, size, is_completed
 `
 
 func (q *Queries) MarkCategoryAsComplete(ctx context.Context, id int64) (Category, error) {
@@ -73,13 +76,14 @@ func (q *Queries) MarkCategoryAsComplete(ctx context.Context, id int64) (Categor
 		&i.ID,
 		&i.Name,
 		&i.Url,
+		&i.Size,
 		&i.IsCompleted,
 	)
 	return i, err
 }
 
 const markCategoryAsIncomplete = `-- name: MarkCategoryAsIncomplete :one
-update categories set is_completed = 0 where id = ? returning id, name, url, is_completed
+update categories set is_completed = 0 where id = ? returning id, name, url, size, is_completed
 `
 
 func (q *Queries) MarkCategoryAsIncomplete(ctx context.Context, id int64) (Category, error) {
@@ -89,6 +93,7 @@ func (q *Queries) MarkCategoryAsIncomplete(ctx context.Context, id int64) (Categ
 		&i.ID,
 		&i.Name,
 		&i.Url,
+		&i.Size,
 		&i.IsCompleted,
 	)
 	return i, err
