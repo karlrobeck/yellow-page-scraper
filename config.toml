@@ -1,0 +1,6 @@
+
+[site]
+url = "https://yellow-pages.ph"
+
+[request]
+timeout-per-request = 3 # in seconds
