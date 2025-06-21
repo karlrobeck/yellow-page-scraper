@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -103,7 +104,7 @@ to quickly create a Cobra application.`,
 					// save to database
 					if _, err := queries.CreateCategory(cmd.Context(), models.CreateCategoryParams{
 						Name: name,
-						Url:  link,
+						Url:  strings.ReplaceAll(link, "page-1", ""),
 						Size: int64(size),
 					}); err != nil {
 						fmt.Println(err)

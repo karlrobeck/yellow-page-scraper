@@ -65,6 +65,23 @@ func (q *Queries) GetAllCategories(ctx context.Context) ([]Category, error) {
 	return items, nil
 }
 
+const getCategory = `-- name: GetCategory :one
+select id, name, url, size, is_completed from categories where name = ?
+`
+
+func (q *Queries) GetCategory(ctx context.Context, name string) (Category, error) {
+	row := q.db.QueryRowContext(ctx, getCategory, name)
+	var i Category
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Url,
+		&i.Size,
+		&i.IsCompleted,
+	)
+	return i, err
+}
+
 const markCategoryAsComplete = `-- name: MarkCategoryAsComplete :one
 update categories set is_completed = 1 where id = ? returning id, name, url, size, is_completed
 `
