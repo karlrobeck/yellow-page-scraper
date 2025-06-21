@@ -20,11 +20,10 @@ insert into business_info (
   website,
   social_media,
   canonical_link,
-  rating,
-  description
+  rating
 ) values (
-  ?,?,?,?,?,?,?,?,?,?
-) returning id, trade_name, business_name, address, phone_number, email, website, social_media, canonical_link, rating, description
+  ?,?,?,?,?,?,?,?,?
+) returning id, trade_name, business_name, address, phone_number, email, website, social_media, canonical_link, rating
 `
 
 type CreateBusinessInfoParams struct {
@@ -37,7 +36,6 @@ type CreateBusinessInfoParams struct {
 	SocialMedia   sql.NullString
 	CanonicalLink string
 	Rating        sql.NullFloat64
-	Description   sql.NullString
 }
 
 func (q *Queries) CreateBusinessInfo(ctx context.Context, arg CreateBusinessInfoParams) (BusinessInfo, error) {
@@ -51,7 +49,6 @@ func (q *Queries) CreateBusinessInfo(ctx context.Context, arg CreateBusinessInfo
 		arg.SocialMedia,
 		arg.CanonicalLink,
 		arg.Rating,
-		arg.Description,
 	)
 	var i BusinessInfo
 	err := row.Scan(
@@ -65,13 +62,12 @@ func (q *Queries) CreateBusinessInfo(ctx context.Context, arg CreateBusinessInfo
 		&i.SocialMedia,
 		&i.CanonicalLink,
 		&i.Rating,
-		&i.Description,
 	)
 	return i, err
 }
 
 const getBusinessInfo = `-- name: GetBusinessInfo :one
-select id, trade_name, business_name, address, phone_number, email, website, social_media, canonical_link, rating, description from business_info where canonical_link = ?
+select id, trade_name, business_name, address, phone_number, email, website, social_media, canonical_link, rating from business_info where canonical_link = ?
 `
 
 func (q *Queries) GetBusinessInfo(ctx context.Context, canonicalLink string) (BusinessInfo, error) {
@@ -88,7 +84,6 @@ func (q *Queries) GetBusinessInfo(ctx context.Context, canonicalLink string) (Bu
 		&i.SocialMedia,
 		&i.CanonicalLink,
 		&i.Rating,
-		&i.Description,
 	)
 	return i, err
 }

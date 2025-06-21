@@ -25,6 +25,5 @@ create table business_info (
   website text unique, -- business
   social_media text unique, -- business social media
   canonical_link text not null references business_in_category(url), -- canonical link
-  rating real, -- business rating
-  description text -- business description
+  rating real -- business rating
 );

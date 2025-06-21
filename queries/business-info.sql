@@ -8,10 +8,9 @@ insert into business_info (
   website,
   social_media,
   canonical_link,
-  rating,
-  description
+  rating
 ) values (
-  ?,?,?,?,?,?,?,?,?,?
+  ?,?,?,?,?,?,?,?,?
 ) returning *;
 
 -- name: GetBusinessInfo :one

@@ -27,7 +27,6 @@ type BusinessInfo struct {
 	SocialMedia   sql.NullString
 	CanonicalLink string
 	Rating        sql.NullFloat64
-	Description   sql.NullString
 }
 
 type Category struct {

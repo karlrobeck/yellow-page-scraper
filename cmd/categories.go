@@ -96,7 +96,7 @@ to quickly create a Cobra application.`,
 						continue
 					}
 
-					sizeStr := node.Children().Last().Text()
+					sizeStr := strings.ReplaceAll(node.Children().Last().Text(), ",", "")
 
 					var size int
 					fmt.Sscanf(sizeStr, "%d", &size)
